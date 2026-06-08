@@ -26,9 +26,10 @@ export function TaskForm({ task, onChange }: Props) {
     const nextCurrentBlocker = blockers.find((blocker) => !blocker.resolved)?.label ?? 'None';
     onChange({ ...task, aiDetectedBlockers: blockers, currentBlocker: nextCurrentBlocker });
   };
+  const timingOpenByDefault = !['Scope Market', 'Construction'].includes(task.station);
 
   return (
-      <div className="space-y-5">
+    <div className="space-y-5">
       <AiBlockers task={task} onResolve={resolveBlocker} />
       <TextField ai={isAiField(task, 'title')} blocked={isFieldBlocked(task, 'title')} label="Title" value={task.title} onChange={(value) => update('title', value)} />
       <TextArea ai={isAiField(task, 'description')} blocked={isFieldBlocked(task, 'description')} label="Description" value={task.description} onChange={(value) => update('description', value)} />
@@ -57,13 +58,19 @@ export function TaskForm({ task, onChange }: Props) {
         onChange={(value) => update('minimumShippableVersion', value)}
       />
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <TextField ai={isAiField(task, 'shipDate')} blocked={isFieldBlocked(task, 'shipDate')} inputMode="date" label="Suggested ship date" value={task.shipDate} onChange={(value) => update('shipDate', value)} />
-        <TextField inputMode="time" label="Due time" value={task.dueTime} onChange={(value) => update('dueTime', value)} />
-        <TextField ai={isAiField(task, 'shipGoal')} blocked={isFieldBlocked(task, 'shipGoal')} inputMode="date" label="Ship goal date" value={task.shipGoal} onChange={(value) => update('shipGoal', value)} />
-        <TextField ai={isAiField(task, 'estimatedTime')} label="Estimated time taken" value={task.estimatedTime} onChange={(value) => update('estimatedTime', value)} />
-      </div>
-      <TimingReadout task={task} />
+      <details className="field-disclosure" open={timingOpenByDefault}>
+        <summary>
+          <span>Timing and effort</span>
+          <strong>{task.shipGoal || task.shipDate || 'No ship date'}</strong>
+        </summary>
+        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <TextField ai={isAiField(task, 'shipDate')} blocked={isFieldBlocked(task, 'shipDate')} inputMode="date" label="Suggested ship date" value={task.shipDate} onChange={(value) => update('shipDate', value)} />
+          <TextField inputMode="time" label="Due time" value={task.dueTime} onChange={(value) => update('dueTime', value)} />
+          <TextField ai={isAiField(task, 'shipGoal')} blocked={isFieldBlocked(task, 'shipGoal')} inputMode="date" label="Ship goal date" value={task.shipGoal} onChange={(value) => update('shipGoal', value)} />
+          <TextField ai={isAiField(task, 'estimatedTime')} label="Estimated time taken" value={task.estimatedTime} onChange={(value) => update('estimatedTime', value)} />
+        </div>
+        <TimingReadout task={task} />
+      </details>
     </div>
   );
 }

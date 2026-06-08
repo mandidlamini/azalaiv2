@@ -89,6 +89,10 @@
   h3,
   .font-display {
     font-family: 'Essays1743', 'Cerebri Sans Pro', Georgia, serif;
+    font-kerning: normal;
+    letter-spacing: 0;
+    line-height: 1.08;
+    word-spacing: 0.05em;
   }
 
   button,
@@ -106,10 +110,11 @@
 
   .azalai-logo {
     @apply block h-auto w-[min(68vw,390px)] max-w-full object-contain sm:w-[340px] md:w-[430px];
+    filter: invert(1);
   }
 
   .azalai-logo-plate {
-    @apply inline-flex rounded-2xl border border-black/70 bg-black px-5 py-3 shadow-panel;
+    @apply inline-flex rounded-2xl border border-transparent bg-transparent px-0 py-0;
   }
 
   .route-line {
@@ -126,6 +131,7 @@
 
   .ledger-cell strong {
     @apply font-display text-2xl text-dispatch;
+    word-spacing: 0.08em;
   }
 
   .board-scroll {
@@ -310,6 +316,31 @@
 
   .field textarea {
     @apply min-h-24 resize-y;
+  }
+
+  .field-disclosure {
+    @apply rounded-2xl border border-ink/10 bg-shelf/35 p-3 shadow-slip;
+  }
+
+  .field-disclosure summary {
+    @apply flex cursor-pointer list-none items-center justify-between gap-3 rounded-xl px-2 py-1 text-sm font-bold text-ink/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dispatch;
+  }
+
+  .field-disclosure summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .field-disclosure summary::after {
+    content: '+';
+    @apply flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-ink/15 bg-paper font-display text-lg text-stamp;
+  }
+
+  .field-disclosure[open] summary::after {
+    content: '-';
+  }
+
+  .field-disclosure summary strong {
+    @apply rounded-full border border-olive/20 bg-paper px-2.5 py-1 text-xs text-olive;
   }
 
   .blocker-status {
