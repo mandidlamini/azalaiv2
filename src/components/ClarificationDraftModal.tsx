@@ -49,9 +49,9 @@ export function ClarificationDraftModal({ rawItem, draft, onChange, onAccept, on
               <TextField label="Reviewer name" value={draft.reviewerName} onChange={(value) => update('reviewerName', value)} />
               <RiskSelector value={draft.riskLevel} onChange={(value) => update('riskLevel', value)} />
               <BlockerReadout blocker={draft.currentBlocker} />
-              <TextField label="Due date" value={draft.dueDate} onChange={(value) => update('dueDate', value)} />
-              <TextField label="Due time" value={draft.dueTime} onChange={(value) => update('dueTime', value)} />
-              <TextField label="Ship goal date" value={draft.shipGoal} onChange={(value) => update('shipGoal', value)} />
+              <TextField inputMode="date" label="Due date" value={draft.dueDate} onChange={(value) => update('dueDate', value)} />
+              <TextField inputMode="time" label="Due time" value={draft.dueTime} onChange={(value) => update('dueTime', value)} />
+              <TextField inputMode="date" label="Ship goal date" value={draft.shipGoal} onChange={(value) => update('shipGoal', value)} />
             </div>
           </section>
 
@@ -122,13 +122,45 @@ export function ClarificationDraftModal({ rawItem, draft, onChange, onAccept, on
   );
 }
 
-function TextField({ label, value, onChange }: { label: string; value: string; onChange: (value: string) => void }) {
+function TextField({
+  label,
+  value,
+  onChange,
+  inputMode = 'text',
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  inputMode?: 'text' | 'date' | 'time';
+}) {
   return (
     <label className="field">
       <span>{label}</span>
-      <input value={value} onChange={(event) => onChange(event.target.value)} />
+      <input
+        step={inputMode === 'time' ? 900 : undefined}
+        type={inputMode}
+        value={value}
+        onBlur={(event) => {
+          if (inputMode === 'time') onChange(roundTimeToQuarterHour(event.target.value));
+        }}
+        onChange={(event) => onChange(event.target.value)}
+      />
     </label>
   );
+}
+
+function roundTimeToQuarterHour(value: string) {
+  if (!value) return '';
+  const match = value.match(/^(\d{1,2}):(\d{2})$/);
+  if (!match) return value;
+
+  const hours = Number(match[1]);
+  const minutes = Number(match[2]);
+  const total = hours * 60 + minutes;
+  const rounded = Math.round(total / 15) * 15;
+  const nextHours = Math.floor(rounded / 60) % 24;
+  const nextMinutes = rounded % 60;
+  return `${String(nextHours).padStart(2, '0')}:${String(nextMinutes).padStart(2, '0')}`;
 }
 
 function TextArea({ label, value, onChange }: { label: string; value: string; onChange: (value: string) => void }) {

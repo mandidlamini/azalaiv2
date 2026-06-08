@@ -10,11 +10,15 @@ export function isFieldBlocked(task: Task, field: AiDetectedBlocker['field']) {
 }
 
 export function markFieldConfirmed(task: Task, field: AiDetectedBlocker['field']): Task {
+  const aiDetectedBlockers = (task.aiDetectedBlockers ?? []).map((blocker) =>
+    blocker.field === field ? { ...blocker, resolved: true, source: 'Manual' as const } : blocker,
+  );
+  const hasUnresolvedBlockers = aiDetectedBlockers.some((blocker) => !blocker.resolved);
+
   return {
     ...task,
-    aiDetectedBlockers: (task.aiDetectedBlockers ?? []).map((blocker) =>
-      blocker.field === field ? { ...blocker, resolved: true, source: 'Manual' } : blocker,
-    ),
+    currentBlocker: hasUnresolvedBlockers ? task.currentBlocker : 'None',
+    aiDetectedBlockers,
     aiTouchedFields: (task.aiTouchedFields ?? []).filter((item) => item !== field),
   };
 }

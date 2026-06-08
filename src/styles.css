@@ -172,7 +172,7 @@
   .action-button,
   .icon-button,
   .text-button {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl border font-semibold transition;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dispatch;
   }
 
   .primary-button {
@@ -217,6 +217,35 @@
 
   .detail-panel {
     @apply absolute right-0 top-0 h-full w-full overflow-y-auto bg-card p-5 shadow-panel md:w-[86vw] lg:w-[78vw];
+  }
+
+  .dispatch-slip-header {
+    @apply flex items-start justify-between gap-4 border-b border-ink/15 pb-3;
+  }
+
+  .station-badge,
+  .date-badge {
+    @apply rounded-full border px-2.5 py-1 text-xs font-bold leading-none;
+  }
+
+  .station-badge {
+    @apply border-olive/30 bg-olive/10 text-olive;
+  }
+
+  .date-badge {
+    @apply border-dispatch/30 bg-dispatch/10 text-dispatch;
+  }
+
+  .date-badge.is-missing {
+    @apply border-stamp/30 bg-stamp/10 text-stamp;
+  }
+
+  .route-actions {
+    @apply grid grid-cols-1 gap-2 sm:grid-cols-2;
+  }
+
+  .route-button {
+    @apply w-full justify-center px-3 py-2.5 text-center text-sm;
   }
 
   .panel-box {

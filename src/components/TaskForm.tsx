@@ -23,11 +23,12 @@ export function TaskForm({ task, onChange }: Props) {
     const blockers = task.aiDetectedBlockers.map((blocker) =>
       blocker.id === blockerId ? { ...blocker, resolved: true, source: 'Manual' as const } : blocker,
     );
-    onChange({ ...task, aiDetectedBlockers: blockers, currentBlocker: blockers.some((blocker) => !blocker.resolved) ? task.currentBlocker : 'None' });
+    const nextCurrentBlocker = blockers.find((blocker) => !blocker.resolved)?.label ?? 'None';
+    onChange({ ...task, aiDetectedBlockers: blockers, currentBlocker: nextCurrentBlocker });
   };
 
   return (
-    <div className="space-y-5">
+      <div className="space-y-5">
       <AiBlockers task={task} onResolve={resolveBlocker} />
       <TextField ai={isAiField(task, 'title')} blocked={isFieldBlocked(task, 'title')} label="Title" value={task.title} onChange={(value) => update('title', value)} />
       <TextArea ai={isAiField(task, 'description')} blocked={isFieldBlocked(task, 'description')} label="Description" value={task.description} onChange={(value) => update('description', value)} />
@@ -46,7 +47,7 @@ export function TaskForm({ task, onChange }: Props) {
         <Select ai={isAiField(task, 'riskLevel')} label="Risk level" value={task.riskLevel} options={RISK_LEVELS} onChange={(value) => update('riskLevel', value)} />
         <Select ai={isAiField(task, 'reviewRoute')} label="Review route" value={task.reviewRoute} options={REVIEW_ROUTES} onChange={(value) => update('reviewRoute', value)} />
         <TextField ai={isAiField(task, 'reviewerName')} blocked={isFieldBlocked(task, 'reviewerName')} label="Reviewer name" value={task.reviewerName} onChange={(value) => update('reviewerName', value)} />
-        <BlockerStatus blocker={task.currentBlocker} onUnblock={() => update('currentBlocker', 'None')} />
+        {task.currentBlocker !== 'None' && <BlockerStatus blocker={task.currentBlocker} onUnblock={() => update('currentBlocker', 'None')} />}
       </div>
 
       <TextArea
@@ -57,9 +58,9 @@ export function TaskForm({ task, onChange }: Props) {
       />
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <TextField ai={isAiField(task, 'shipDate')} blocked={isFieldBlocked(task, 'shipDate')} label="Suggested ship date" value={task.shipDate} onChange={(value) => update('shipDate', value)} />
-        <TextField label="Due time" value={task.dueTime} onChange={(value) => update('dueTime', value)} />
-        <TextField ai={isAiField(task, 'shipGoal')} blocked={isFieldBlocked(task, 'shipGoal')} label="Ship goal date" value={task.shipGoal} onChange={(value) => update('shipGoal', value)} />
+        <TextField ai={isAiField(task, 'shipDate')} blocked={isFieldBlocked(task, 'shipDate')} inputMode="date" label="Suggested ship date" value={task.shipDate} onChange={(value) => update('shipDate', value)} />
+        <TextField inputMode="time" label="Due time" value={task.dueTime} onChange={(value) => update('dueTime', value)} />
+        <TextField ai={isAiField(task, 'shipGoal')} blocked={isFieldBlocked(task, 'shipGoal')} inputMode="date" label="Ship goal date" value={task.shipGoal} onChange={(value) => update('shipGoal', value)} />
         <TextField ai={isAiField(task, 'estimatedTime')} label="Estimated time taken" value={task.estimatedTime} onChange={(value) => update('estimatedTime', value)} />
       </div>
       <TimingReadout task={task} />
@@ -73,14 +74,7 @@ function isAiField(task: Task, field: string) {
 
 function AiBlockers({ task, onResolve }: { task: Task; onResolve: (blockerId: string) => void }) {
   const blockers = unresolvedBlockers(task);
-  if (blockers.length === 0) {
-    return (
-      <div className="ai-blockers is-clear">
-        <span>AI detected blockers</span>
-        <strong>Route clear</strong>
-      </div>
-    );
-  }
+  if (blockers.length === 0) return null;
 
   return (
     <div className="ai-blockers">
@@ -148,13 +142,53 @@ function BlockerStatus({ blocker, onUnblock }: { blocker: Task['currentBlocker']
   );
 }
 
-function TextField({ label, value, onChange, ai = false, blocked = false }: { label: string; value: string; onChange: (value: string) => void; ai?: boolean; blocked?: boolean }) {
+function TextField({
+  label,
+  value,
+  onChange,
+  ai = false,
+  blocked = false,
+  inputMode = 'text',
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  ai?: boolean;
+  blocked?: boolean;
+  inputMode?: 'text' | 'date' | 'time';
+}) {
   return (
     <label className={blocked ? 'field is-blocked' : ai ? 'field is-ai' : 'field'}>
       <span>{label}{ai && <em>AI suggested</em>}</span>
-      <input value={value} onChange={(event) => onChange(event.target.value)} />
+      <input
+        step={inputMode === 'time' ? 900 : undefined}
+        type={inputMode}
+        value={value}
+        onBlur={(event) => {
+          if (inputMode === 'time') onChange(roundTimeToQuarterHour(event.target.value));
+        }}
+        onChange={(event) => onChange(inputMode === 'time' ? event.target.value : normalizeDateValue(event.target.value))}
+      />
     </label>
   );
+}
+
+function normalizeDateValue(value: string) {
+  return value;
+}
+
+function roundTimeToQuarterHour(value: string) {
+  if (!value) return '';
+  const match = value.match(/^(\d{1,2}):(\d{2})$/);
+  if (!match) return value;
+
+  const hours = Number(match[1]);
+  const minutes = Number(match[2]);
+  const total = hours * 60 + minutes;
+  const rounded = Math.round(total / 15) * 15;
+  const nextHours = Math.floor(rounded / 60) % 24;
+  const nextMinutes = rounded % 60;
+  return `${String(nextHours).padStart(2, '0')}:${String(nextMinutes).padStart(2, '0')}`;
 }
 
 function TextArea({ label, value, onChange, ai = false, blocked = false }: { label: string; value: string; onChange: (value: string) => void; ai?: boolean; blocked?: boolean }) {

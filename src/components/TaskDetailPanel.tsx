@@ -22,13 +22,20 @@ export function TaskDetailPanel({ task, onClose, onSave, onApplyDecision, onShip
     <aside className="detail-shell">
       <div className="detail-backdrop" onClick={onClose} />
       <div className="detail-panel">
-        <header className="flex items-start justify-between gap-4 border-b border-ink/15 pb-4">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-stamp">Dispatch slip</p>
-            <h2 className="mt-1 font-display text-3xl text-ink">{task.title || 'Untitled stock'}</h2>
-            <p className="mt-1 text-sm text-ink/65">{task.station}</p>
+        <header className="dispatch-slip-header">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-stamp">Dispatch slip</p>
+              <span className="station-badge">{task.station}</span>
+              <span className={task.shipGoal || task.shipDate ? 'date-badge' : 'date-badge is-missing'}>
+                {task.shipGoal || task.shipDate || 'No ship date'}
+              </span>
+            </div>
+            <h2 className="mt-1 line-clamp-2 font-display text-2xl leading-tight text-ink md:text-3xl" title={task.title || 'Untitled stock'}>
+              {task.title || 'Untitled stock'}
+            </h2>
           </div>
-          <button className="icon-button" title="Close" onClick={onClose}>
+          <button aria-label="Close dispatch slip" className="icon-button shrink-0" title="Close" type="button" onClick={onClose}>
             <X className="h-5 w-5" />
           </button>
         </header>
@@ -119,27 +126,27 @@ export function TaskDetailPanel({ task, onClose, onSave, onApplyDecision, onShip
                   <p>Confirm the work has actually been posted, sent, submitted, uploaded, exported, published, or delivered.</p>
                 </div>
               )}
-              <div className="mt-4 grid gap-2">
-                <button className="primary-button" onClick={() => onMoveNext(task.id)}>
+              <div className="route-actions mt-4">
+                <button aria-label={`Send ${task.title || 'this stock'} to the next station`} className="primary-button route-button" type="button" onClick={() => onMoveNext(task.id)}>
                   <ChevronRight className="h-4 w-4" />
-                  Send to next station
+                  <span>Next station</span>
                 </button>
-                <button className="secondary-button" onClick={() => onApplyDecision({ ...task, releaseDecision: task.releaseDecision })}>
+                <button aria-label="Apply current release recommendation" className="secondary-button route-button" type="button" onClick={() => onApplyDecision({ ...task, releaseDecision: task.releaseDecision })}>
                   <CheckCircle2 className="h-4 w-4" />
-                  Apply current recommendation
+                  <span>Apply recommendation</span>
                 </button>
-                <button className="secondary-button" onClick={() => onMoveTo(task.id, 'Revision Alley')}>
-                  Move to Revision Alley
+                <button aria-label="Move card to Revision Alley" className="secondary-button route-button" type="button" onClick={() => onMoveTo(task.id, 'Revision Alley')}>
+                  Revision Alley
                 </button>
-                <button className="secondary-button" onClick={() => onMoveTo(task.id, 'Feedback Booth')}>
-                  Move to Feedback Booth
+                <button aria-label="Move card to Feedback Booth" className="secondary-button route-button" type="button" onClick={() => onMoveTo(task.id, 'Feedback Booth')}>
+                  Feedback Booth
                 </button>
-                <button className="secondary-button" onClick={() => onMoveTo(task.id, 'Departure Gate')}>
-                  Move to Departure Gate
+                <button aria-label="Move card to Departure Gate" className="secondary-button route-button" type="button" onClick={() => onMoveTo(task.id, 'Departure Gate')}>
+                  Departure Gate
                 </button>
-                <button className="secondary-button" onClick={() => onShip(task)}>
+                <button aria-label="Confirm shipped and log this card in Trade Ledger" className="secondary-button route-button" type="button" onClick={() => onShip(task)}>
                   <PackageCheck className="h-4 w-4" />
-                  Ship and log in Trade Ledger
+                  <span>Ship to ledger</span>
                 </button>
               </div>
             </section>
