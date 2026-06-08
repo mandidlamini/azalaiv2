@@ -3,17 +3,59 @@
 @tailwind utilities;
 
 @layer base {
+  @font-face {
+    font-family: 'Providence Sans';
+    src: url('/assets/fonts/providence-sans-regular.ttf') format('truetype');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: 'Cerebri Sans Pro';
+    src: url('/assets/fonts/cerebri-sans-pro-regular.ttf') format('truetype');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: 'Cerebri Sans Pro';
+    src: url('/assets/fonts/cerebri-sans-pro-semibold.ttf') format('truetype');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  @font-face {
+    font-family: 'Cerebri Sans Pro';
+    src: url('/assets/fonts/cerebri-sans-pro-bold.ttf') format('truetype');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 700;
+  }
+
   * {
     box-sizing: border-box;
   }
 
   body {
     margin: 0;
+    color: #4a4947;
+    font-family: 'Cerebri Sans Pro', Inter, Arial, system-ui, sans-serif;
     background:
-      linear-gradient(rgba(34, 39, 51, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(34, 39, 51, 0.04) 1px, transparent 1px),
-      #f8f4e9;
+      linear-gradient(rgba(74, 73, 71, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(74, 73, 71, 0.035) 1px, transparent 1px),
+      radial-gradient(circle at 20% 0%, rgba(200, 148, 120, 0.14), transparent 28rem),
+      #f9f7f0;
     background-size: 32px 32px;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: 'Providence Sans', 'Cerebri Sans Pro', Inter, Arial, system-ui, sans-serif;
   }
 
   button,
@@ -29,16 +71,20 @@
     @apply relative z-10 flex flex-col gap-6 px-5 py-8 md:flex-row md:items-end md:justify-between md:px-8;
   }
 
+  .azalai-logo {
+    @apply block h-auto w-[min(68vw,390px)] max-w-full object-contain sm:w-[340px] md:w-[430px];
+  }
+
   .route-line {
     @apply pointer-events-none fixed left-0 right-0 top-28 h-px bg-dispatch/25;
   }
 
   .ledger-strip {
-    @apply mx-5 mb-5 grid grid-cols-1 gap-3 border-y border-ink/15 bg-card/70 p-3 sm:grid-cols-3 md:mx-8;
+    @apply mx-5 mb-5 grid grid-cols-1 gap-3 rounded-2xl border border-ink/10 bg-shelf/55 p-3 shadow-panel sm:grid-cols-3 md:mx-8;
   }
 
   .ledger-cell {
-    @apply flex items-center justify-between gap-3 border border-ink/10 bg-paper px-3 py-2 text-sm text-ink/65;
+    @apply flex items-center justify-between gap-3 rounded-xl border border-ink/10 bg-paper px-4 py-3 text-sm text-ink/70 shadow-slip;
   }
 
   .ledger-cell strong {
@@ -51,42 +97,42 @@
   }
 
   .intake-desk {
-    @apply border-y border-ink/15 bg-card/80 p-4 shadow-sm;
+    @apply rounded-2xl border border-ink/10 bg-card/90 p-4 shadow-panel;
   }
 
   .intake-modal {
-    @apply absolute left-1/2 top-8 z-10 max-h-[calc(100vh-4rem)] w-[min(940px,calc(100vw-2rem))] -translate-x-1/2 overflow-y-auto rounded border border-ink/15 bg-card shadow-2xl;
+    @apply absolute left-1/2 top-8 z-10 max-h-[calc(100vh-4rem)] w-[min(940px,calc(100vw-2rem))] -translate-x-1/2 overflow-y-auto rounded-2xl border border-ink/15 bg-card shadow-panel;
   }
 
   .column {
-    @apply w-[310px] shrink-0 border-x border-ink/10 bg-shelf/70 p-3;
+    @apply w-[310px] shrink-0 rounded-2xl border border-ink/10 bg-shelf/75 p-3 shadow-panel;
   }
 
   .stock-card {
-    @apply cursor-grab rounded border border-ink/15 bg-card p-4 shadow-slip transition hover:-translate-y-0.5 hover:border-dispatch/40 active:cursor-grabbing;
+    @apply cursor-grab rounded-2xl border border-ink/15 bg-card p-4 shadow-slip transition hover:-translate-y-0.5 hover:border-dispatch/40 hover:shadow-panel active:cursor-grabbing;
   }
 
   .raw-card {
-    @apply rounded border-2 border-dashed border-stamp/35 bg-paper p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-stamp/60;
+    @apply rounded-2xl border-2 border-dashed border-stamp/35 bg-paper p-4 shadow-slip transition hover:-translate-y-0.5 hover:border-stamp/60 hover:shadow-panel;
     background-image: repeating-linear-gradient(
       -45deg,
-      rgba(182, 63, 45, 0.05),
-      rgba(182, 63, 45, 0.05) 8px,
+      rgba(177, 116, 87, 0.08),
+      rgba(177, 116, 87, 0.08) 8px,
       transparent 8px,
       transparent 16px
     );
   }
 
   .raw-label {
-    @apply inline-flex rounded-sm border border-stamp/35 bg-stamp/10 px-2 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-stamp;
+    @apply inline-flex rounded-md border border-stamp/35 bg-stamp/10 px-2 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-stamp;
   }
 
   .empty-slot {
-    @apply rounded border border-dashed border-ink/25 bg-card/40 p-6 text-center text-sm uppercase tracking-[0.16em] text-ink/45;
+    @apply rounded-2xl border border-dashed border-ink/25 bg-card/50 p-6 text-center text-sm uppercase tracking-[0.16em] text-ink/45;
   }
 
   .tag {
-    @apply rounded-sm border px-2 py-1 text-[11px] font-bold uppercase tracking-wide;
+    @apply rounded-md border px-2 py-1 text-[11px] font-bold uppercase tracking-wide;
   }
 
   .tag-blue {
@@ -106,19 +152,19 @@
   .action-button,
   .icon-button,
   .text-button {
-    @apply inline-flex items-center justify-center gap-2 rounded border font-semibold transition;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border font-semibold transition;
   }
 
   .primary-button {
-    @apply border-dispatch bg-dispatch px-4 py-2 text-card hover:bg-dispatch/90;
+    @apply border-dispatch bg-dispatch px-4 py-2 text-card shadow-button hover:-translate-y-0.5 hover:bg-terracotta;
   }
 
   .secondary-button {
-    @apply border-ink/20 bg-card px-4 py-2 text-ink hover:border-dispatch/40 hover:text-dispatch;
+    @apply border-olive/35 bg-card px-4 py-2 text-olive hover:-translate-y-0.5 hover:border-terracotta/60 hover:text-dispatch hover:shadow-slip;
   }
 
   .action-button {
-    @apply border-ink/15 bg-card px-3 py-2 text-left text-sm text-ink hover:border-dispatch/40;
+    @apply border-ink/15 bg-card px-3 py-2 text-left text-sm text-ink hover:-translate-y-0.5 hover:border-dispatch/40 hover:shadow-slip;
   }
 
   .action-button.is-active {
@@ -126,7 +172,7 @@
   }
 
   .icon-button {
-    @apply h-9 w-9 border-ink/15 bg-paper text-ink hover:border-dispatch/40 hover:text-dispatch;
+    @apply h-9 w-9 border-ink/15 bg-paper text-ink hover:-translate-y-0.5 hover:border-dispatch/40 hover:text-dispatch hover:shadow-slip;
   }
 
   .text-button {
@@ -134,7 +180,7 @@
   }
 
   .stt-toggle {
-    @apply inline-flex w-full items-center justify-center gap-2 rounded border border-dispatch bg-dispatch px-4 py-3 text-sm font-bold uppercase tracking-wide text-card transition hover:bg-dispatch/90 sm:w-auto;
+    @apply inline-flex w-full items-center justify-center gap-2 rounded-xl border border-dispatch bg-dispatch px-4 py-3 text-sm font-bold uppercase tracking-wide text-card shadow-button transition hover:-translate-y-0.5 hover:bg-terracotta sm:w-auto;
   }
 
   .stt-toggle.is-recording {
@@ -146,15 +192,15 @@
   }
 
   .detail-backdrop {
-    @apply absolute inset-0 bg-ink/35;
+    @apply absolute inset-0 bg-ink/40;
   }
 
   .detail-panel {
-    @apply absolute right-0 top-0 h-full w-full overflow-y-auto bg-card p-5 shadow-2xl md:w-[86vw] lg:w-[78vw];
+    @apply absolute right-0 top-0 h-full w-full overflow-y-auto bg-card p-5 shadow-panel md:w-[86vw] lg:w-[78vw];
   }
 
   .panel-box {
-    @apply rounded border border-ink/15 bg-card p-4 shadow-sm;
+    @apply rounded-2xl border border-ink/15 bg-card p-4 shadow-slip;
   }
 
   .field {
@@ -168,7 +214,7 @@
   .field input,
   .field textarea,
   .field select {
-    @apply w-full rounded border border-ink/15 bg-paper px-3 py-2 text-ink outline-none transition focus:border-dispatch focus:ring-2 focus:ring-dispatch/20;
+    @apply w-full rounded-xl border border-ink/15 bg-paper px-3 py-2 text-ink outline-none transition focus:border-dispatch focus:ring-2 focus:ring-dispatch/20;
   }
 
   .field textarea {
@@ -176,7 +222,7 @@
   }
 
   .blocker-status {
-    @apply rounded border border-ink/15 bg-paper px-3 py-2 text-sm text-ink/70;
+    @apply rounded-xl border border-ink/15 bg-paper px-3 py-2 text-sm text-ink/70 shadow-slip;
   }
 
   .blocker-status span {
@@ -197,7 +243,7 @@
   }
 
   .risk-pill {
-    @apply rounded border px-3 py-2 text-sm font-bold uppercase tracking-wide transition;
+    @apply rounded-xl border px-3 py-2 text-sm font-bold uppercase tracking-wide shadow-slip transition hover:-translate-y-0.5;
   }
 
   .risk-pill.low {
@@ -217,7 +263,7 @@
   }
 
   .timing-readout {
-    @apply rounded border border-dispatch/20 bg-dispatch/10 px-3 py-2 text-sm text-dispatch;
+    @apply rounded-xl border border-dispatch/20 bg-dispatch/10 px-3 py-2 text-sm text-dispatch shadow-slip;
   }
 
   .timing-readout span {
@@ -241,7 +287,7 @@
   }
 
   .scope-item {
-    @apply grid grid-cols-[auto_1fr_auto_auto] items-center gap-2 rounded border border-ink/10 bg-paper p-2;
+    @apply grid grid-cols-[auto_1fr_auto_auto] items-center gap-2 rounded-xl border border-ink/10 bg-paper p-2 shadow-slip;
   }
 
   .scope-item input[type='checkbox'] {
@@ -250,11 +296,11 @@
 
   .scope-item input[type='text'],
   .scope-add-input {
-    @apply w-full rounded border border-ink/15 bg-card px-3 py-2 text-sm text-ink outline-none transition focus:border-dispatch focus:ring-2 focus:ring-dispatch/20;
+    @apply w-full rounded-xl border border-ink/15 bg-card px-3 py-2 text-sm text-ink outline-none transition focus:border-dispatch focus:ring-2 focus:ring-dispatch/20;
   }
 
   .scope-source {
-    @apply rounded border border-ink/15 bg-card px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-ink/55;
+    @apply rounded-md border border-ink/15 bg-card px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-ink/55;
   }
 
   .scope-source.ai {

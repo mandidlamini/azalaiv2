@@ -150,12 +150,27 @@ export default function App() {
   }
 
   return (
-    <main className="min-h-screen bg-paper text-ink">
+    <main className="min-h-screen bg-paper font-sans text-ink">
       <div className="route-line" />
       <header className="app-header">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.24em] text-stamp">Private release desk</p>
-          <h1 className="mt-2 font-display text-5xl text-ink md:text-7xl">AZALAI</h1>
+          <p className="text-xs font-bold uppercase tracking-[0.24em] text-olive">Private release desk</p>
+          <h1 className="mt-3">
+            <span className="sr-only">Azalai</span>
+            <img
+              className="azalai-logo"
+              src="/assets/logo/azalai-logo.png"
+              alt="Azalai logo"
+              onError={(event) => {
+                event.currentTarget.style.display = 'none';
+                const fallback = event.currentTarget.nextElementSibling;
+                if (fallback instanceof HTMLElement) fallback.hidden = false;
+              }}
+            />
+            <span hidden className="font-display text-5xl text-ink md:text-7xl">
+              AZALAI
+            </span>
+          </h1>
           <p className="mt-2 text-xl text-ink/75">Creative stockroom for work that needs to leave storage.</p>
           <p className="mt-1 text-sm text-ink/60">Clarify the task. Lock the scope. Build the minimum version. Ship the proof.</p>
         </div>
