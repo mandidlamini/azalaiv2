@@ -4,11 +4,27 @@
 
 @layer base {
   @font-face {
-    font-family: 'Providence Sans';
-    src: url('/assets/fonts/providence-sans-regular.ttf') format('truetype');
+    font-family: 'Essays1743';
+    src: url('/assets/fonts/essays1743-medium.ttf') format('truetype');
     font-display: swap;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 500;
+  }
+
+  @font-face {
+    font-family: 'Essays1743';
+    src: url('/assets/fonts/essays1743-bold.ttf') format('truetype');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  @font-face {
+    font-family: 'Essays1743';
+    src: url('/assets/fonts/essays1743-italic.ttf') format('truetype');
+    font-display: swap;
+    font-style: italic;
+    font-weight: 500;
   }
 
   @font-face {
@@ -41,18 +57,15 @@
 
   body {
     margin: 0;
-    color: #4a4947;
+    color: #3f3332;
     font-family: 'Cerebri Sans Pro', Inter, Arial, system-ui, sans-serif;
     background:
-      radial-gradient(ellipse at 50% -12rem, rgba(200, 148, 120, 0.12), transparent 34rem),
-      linear-gradient(90deg, transparent 0, rgba(119, 118, 95, 0.04) 13%, transparent 27%),
-      repeating-linear-gradient(0deg, rgba(74, 73, 71, 0.026) 0 1px, transparent 1px 34px),
-      repeating-linear-gradient(90deg, rgba(177, 116, 87, 0.018) 0 1px, transparent 1px 42px),
-      linear-gradient(100deg, rgba(255, 255, 255, 0.32), transparent 22%, rgba(216, 210, 194, 0.18) 48%, transparent 72%),
-      radial-gradient(circle at 50% 0%, rgba(200, 148, 120, 0.10), transparent 30rem),
-      #f9f7f0;
+      linear-gradient(rgba(247, 247, 244, 0.74), rgba(247, 247, 244, 0.88)),
+      url('/assets/backgrounds/azalai-map-background.png'),
+      #f7f7f4;
     background-attachment: fixed;
-    background-size: auto, 900px 100%, auto, auto, 1200px 100%, auto, auto;
+    background-position: center top;
+    background-size: cover;
   }
 
   body::before {
@@ -62,20 +75,20 @@
     z-index: -1;
     pointer-events: none;
     background:
-      radial-gradient(circle at 18% 12%, rgba(74, 73, 71, 0.035), transparent 0.45rem),
-      radial-gradient(circle at 71% 30%, rgba(177, 116, 87, 0.03), transparent 0.38rem),
-      radial-gradient(circle at 42% 74%, rgba(119, 118, 95, 0.028), transparent 0.42rem),
-      repeating-linear-gradient(96deg, transparent 0 18px, rgba(74, 73, 71, 0.018) 19px 20px, transparent 21px 48px);
+      linear-gradient(90deg, rgba(255, 255, 255, 0.45), transparent 18%, rgba(239, 238, 232, 0.24) 54%, transparent 82%),
+      radial-gradient(circle at 18% 12%, rgba(63, 51, 50, 0.03), transparent 0.45rem),
+      radial-gradient(circle at 71% 30%, rgba(122, 66, 53, 0.028), transparent 0.38rem),
+      repeating-linear-gradient(96deg, transparent 0 18px, rgba(63, 51, 50, 0.014) 19px 20px, transparent 21px 48px);
     background-size: 360px 360px, 420px 420px, 520px 520px, 260px 260px;
     mix-blend-mode: multiply;
-    opacity: 0.55;
+    opacity: 0.6;
   }
 
   h1,
   h2,
   h3,
   .font-display {
-    font-family: 'Providence Sans', 'Cerebri Sans Pro', Inter, Arial, system-ui, sans-serif;
+    font-family: 'Essays1743', 'Cerebri Sans Pro', Georgia, serif;
   }
 
   button,
@@ -95,12 +108,16 @@
     @apply block h-auto w-[min(68vw,390px)] max-w-full object-contain sm:w-[340px] md:w-[430px];
   }
 
+  .azalai-logo-plate {
+    @apply inline-flex rounded-2xl border border-black/70 bg-black px-5 py-3 shadow-panel;
+  }
+
   .route-line {
     @apply pointer-events-none fixed left-0 right-0 top-28 h-px bg-dispatch/25;
   }
 
   .ledger-strip {
-    @apply mx-auto mb-6 grid w-[min(760px,calc(100%-2.5rem))] grid-cols-1 gap-3 rounded-2xl border border-ink/10 bg-shelf/40 p-3 shadow-slip sm:grid-cols-3;
+    @apply mx-auto mb-6 grid w-[min(760px,calc(100%-2.5rem))] grid-cols-1 gap-3 rounded-2xl border border-ink/10 bg-shelf/70 p-3 shadow-slip sm:grid-cols-3;
   }
 
   .ledger-cell {
@@ -125,7 +142,14 @@
   }
 
   .column {
-    @apply w-[310px] shrink-0 rounded-2xl border border-ink/10 bg-shelf/55 p-3 shadow-panel;
+    @apply w-[310px] shrink-0 rounded-2xl border border-ink/10 bg-shelf/50 p-3 shadow-panel;
+    backdrop-filter: blur(1px);
+  }
+
+  .station-heading {
+    @apply sticky top-0 z-10 mb-3 border-b border-ink/10 pb-3;
+    background: linear-gradient(rgba(239, 238, 232, 0.92), rgba(239, 238, 232, 0.68), rgba(239, 238, 232, 0));
+    backdrop-filter: blur(3px);
   }
 
   .stock-card {
@@ -156,7 +180,9 @@
   }
 
   .tag-blue {
-    @apply border-dispatch/25 bg-dispatch/10 text-dispatch;
+    border-color: rgba(41, 59, 81, 0.25);
+    background-color: rgba(41, 59, 81, 0.10);
+    color: #293b51;
   }
 
   .tag-paper {
@@ -176,11 +202,11 @@
   }
 
   .primary-button {
-    @apply border-dispatch bg-dispatch px-4 py-2 text-card shadow-button hover:-translate-y-0.5 hover:bg-terracotta;
+    @apply border-stamp bg-stamp px-4 py-2 text-white shadow-button hover:-translate-y-0.5 hover:bg-dispatch;
   }
 
   .secondary-button {
-    @apply border-olive/35 bg-card px-4 py-2 text-olive hover:-translate-y-0.5 hover:border-terracotta/60 hover:text-dispatch hover:shadow-slip;
+    @apply border-olive/35 bg-card/90 px-4 py-2 text-olive hover:-translate-y-0.5 hover:border-dispatch/60 hover:text-stamp hover:shadow-slip;
   }
 
   .action-button {
@@ -403,5 +429,11 @@
   button:disabled,
   input:disabled {
     @apply cursor-not-allowed opacity-55;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Essays1743', 'Cerebri Sans Pro', Georgia, serif !important;
   }
 }

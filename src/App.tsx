@@ -182,16 +182,18 @@ export default function App() {
           <p className="text-xs font-bold uppercase tracking-[0.24em] text-olive">Private release desk</p>
           <h1 className="mt-3 flex justify-center">
             <span className="sr-only">Azalai</span>
-            <img
-              className="azalai-logo"
-              src="/assets/logo/azalai-logo.png"
-              alt="Azalai logo"
-              onError={(event) => {
-                event.currentTarget.style.display = 'none';
-                const fallback = event.currentTarget.nextElementSibling;
-                if (fallback instanceof HTMLElement) fallback.hidden = false;
-              }}
-            />
+            <span className="azalai-logo-plate">
+              <img
+                className="azalai-logo"
+                src="/assets/logo/azalai-logo.png"
+                alt="Azalai logo"
+                onError={(event) => {
+                  event.currentTarget.style.display = 'none';
+                  const fallback = event.currentTarget.parentElement?.nextElementSibling;
+                  if (fallback instanceof HTMLElement) fallback.hidden = false;
+                }}
+              />
+            </span>
             <span hidden className="font-display text-5xl text-ink md:text-7xl">
               AZALAI
             </span>

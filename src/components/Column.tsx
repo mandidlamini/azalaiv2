@@ -43,7 +43,7 @@ export function Column({ station, tasks, rawItems = [], onOpen, onMove, onDelete
         if (taskId) onDropTask(taskId, station);
       }}
     >
-      <div className="sticky top-0 z-10 bg-shelf/95 pb-3">
+      <div className="station-heading">
         <div className="flex items-start justify-between gap-3">
           <div>
             <h2 className="font-display text-2xl text-ink">{station}</h2>
