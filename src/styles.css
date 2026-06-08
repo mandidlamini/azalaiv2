@@ -44,11 +44,31 @@
     color: #4a4947;
     font-family: 'Cerebri Sans Pro', Inter, Arial, system-ui, sans-serif;
     background:
-      linear-gradient(rgba(74, 73, 71, 0.018) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(74, 73, 71, 0.018) 1px, transparent 1px),
+      radial-gradient(ellipse at 50% -12rem, rgba(200, 148, 120, 0.12), transparent 34rem),
+      linear-gradient(90deg, transparent 0, rgba(119, 118, 95, 0.04) 13%, transparent 27%),
+      repeating-linear-gradient(0deg, rgba(74, 73, 71, 0.026) 0 1px, transparent 1px 34px),
+      repeating-linear-gradient(90deg, rgba(177, 116, 87, 0.018) 0 1px, transparent 1px 42px),
+      linear-gradient(100deg, rgba(255, 255, 255, 0.32), transparent 22%, rgba(216, 210, 194, 0.18) 48%, transparent 72%),
       radial-gradient(circle at 50% 0%, rgba(200, 148, 120, 0.10), transparent 30rem),
       #f9f7f0;
-    background-size: 32px 32px;
+    background-attachment: fixed;
+    background-size: auto, 900px 100%, auto, auto, 1200px 100%, auto, auto;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 18% 12%, rgba(74, 73, 71, 0.035), transparent 0.45rem),
+      radial-gradient(circle at 71% 30%, rgba(177, 116, 87, 0.03), transparent 0.38rem),
+      radial-gradient(circle at 42% 74%, rgba(119, 118, 95, 0.028), transparent 0.42rem),
+      repeating-linear-gradient(96deg, transparent 0 18px, rgba(74, 73, 71, 0.018) 19px 20px, transparent 21px 48px);
+    background-size: 360px 360px, 420px 420px, 520px 520px, 260px 260px;
+    mix-blend-mode: multiply;
+    opacity: 0.55;
   }
 
   h1,
