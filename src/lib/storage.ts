@@ -30,11 +30,19 @@ function normalizeTask(task: Task): Task {
   return {
     ...task,
     audience: normalizeAudience(task.audience as string),
-    station: legacyStation === 'Revision Alley' ? 'Judgement Hall' : task.station,
+    station: task.station,
     releaseDecision:
-      legacyDecision === 'Park' ? 'Storage' : legacyDecision === 'Revise Once' ? 'Undecided' : task.releaseDecision,
+      legacyDecision === 'Storage' ? 'Park' : task.releaseDecision,
     confidenceScore: typeof task.confidenceScore === 'number' ? task.confidenceScore : 3,
     scopeItems: Array.isArray(task.scopeItems) ? task.scopeItems : [],
+    scopeLocked: Boolean(task.scopeLocked),
+    reviewRoute: task.reviewRoute || 'No review needed',
+    reviewerName: task.reviewerName || '',
+    minimumShippableItems: Array.isArray(task.minimumShippableItems)
+      ? task.minimumShippableItems
+      : buildMinimumShippableItems(task.minimumShippableVersion),
+    aiDetectedBlockers: Array.isArray(task.aiDetectedBlockers) ? task.aiDetectedBlockers : [],
+    aiTouchedFields: Array.isArray(task.aiTouchedFields) ? task.aiTouchedFields : [],
     dueTime: task.dueTime || '',
     dueDateFlag: task.dueDateFlag || (task.shipDate ? 'Due date found in intake, but no time was specified.' : 'Due date not specified in intake.'),
     shipGoal: task.shipGoal || '',
@@ -45,6 +53,18 @@ function normalizeTask(task: Task): Task {
         ? 'Due date found in intake, but no time was specified.'
         : 'Due date not specified in intake. Add one if timing matters.'),
   };
+}
+
+function buildMinimumShippableItems(minimumShippableVersion: string) {
+  const text = minimumShippableVersion || 'Define the smallest useful release.';
+  return [
+    {
+      id: crypto.randomUUID(),
+      text,
+      done: false,
+      source: 'AI' as const,
+    },
+  ];
 }
 
 function normalizeAudience(audience: string): Task['audience'] {

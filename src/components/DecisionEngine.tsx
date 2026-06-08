@@ -21,12 +21,13 @@ export function DecisionEngine({ task, onApplyDecision, onSave }: Props) {
       <div className="flex items-start gap-3">
         <BadgeCheck className="mt-1 h-5 w-5 text-dispatch" />
         <div>
-          <h3 className="font-display text-lg text-ink">Release Decision</h3>
+          <h3 className="font-display text-lg text-ink">Release Recommendation</h3>
           <p className="mt-1 text-sm text-ink/70">{recommendation.explanation}</p>
         </div>
       </div>
-      <div className="mt-4 rounded border border-stamp/30 bg-stamp/10 px-3 py-2 text-sm font-semibold text-stamp">
-        Recommended: {recommendation.decision}
+      <div className="ai-suggestion mt-4">
+        <span>AI generated</span>
+        <strong>{recommendation.decision === 'Undecided' ? 'Waiting for Judgement Hall' : recommendation.decision}</strong>
       </div>
       {showConfidence && (
         <label className="field mt-4">
@@ -45,6 +46,7 @@ export function DecisionEngine({ task, onApplyDecision, onSave }: Props) {
       <button
         className="primary-button mt-4 w-full"
         onClick={() => onApplyDecision({ ...task, releaseDecision: recommendation.decision })}
+        disabled={recommendation.decision === 'Undecided'}
       >
         <Send className="h-4 w-4" />
         Apply recommendation

@@ -1,65 +1,60 @@
 import type { DecisionResult, Task } from '../types';
+import { allDone, unresolvedBlockers } from './workflow';
 
 export function recommendReleaseDecision(task: Task): DecisionResult {
+  if (task.station !== 'Judgement Hall') {
+    return {
+      decision: 'Undecided',
+      explanation: 'Release recommendation runs in Judgement Hall after construction is complete.',
+    };
+  }
+
+  if (unresolvedBlockers(task).length > 0 || task.currentBlocker !== 'None') {
+    return {
+      decision: 'Park',
+      explanation: 'There are unresolved route blockers. Park this until the blocker is resolved.',
+    };
+  }
+
+  if (!allDone(task.scopeItems) || !allDone(task.minimumShippableItems)) {
+    return {
+      decision: 'Revise Once',
+      explanation: 'The build or minimum shippable version checklist is not fully complete.',
+    };
+  }
+
   if (!task.minimumShippableVersion.trim()) {
     return {
-      decision: 'Storage',
-      explanation:
-        'The task needs a minimum shippable version before it can move forward, so it belongs in Storage for now.',
+      decision: 'Park',
+      explanation: 'The task needs a minimum shippable version before it can leave the system.',
     };
   }
 
   if (task.confidenceScore <= 2) {
     return {
       decision: 'Ask for Feedback',
-      explanation:
-        'Confidence is low enough that targeted feedback is more useful than another private polish pass.',
+      explanation: 'Confidence is low enough that targeted feedback is more useful than another private polish pass.',
     };
   }
 
-  if (task.riskLevel === 'High') {
-    if (task.confidenceScore >= 5) {
-      return {
-        decision: 'Ship',
-        explanation:
-          'This is high risk, but confidence is maxed.',
-      };
-    }
-
+  if (task.riskLevel === 'High' && task.confidenceScore < 5) {
     return {
       decision: 'Ask for Feedback',
-      explanation:
-        'High-risk work should get an outside signal unless confidence, clarity, and approvals are already resolved.',
-    };
-  }
-
-  if (task.riskLevel === 'Medium' && task.confidenceScore >= 4) {
-    return {
-      decision: 'Ship',
-      explanation:
-        'Medium-risk work has enough confidence to move toward shipping.',
-    };
-  }
-
-  if (task.riskLevel === 'Low' && task.confidenceScore >= 4) {
-    return {
-      decision: 'Ship',
-      explanation:
-        'Low-risk work with strong confidence should leave storage and become proof.',
+      explanation: 'High-risk work should get an outside signal unless confidence, clarity, and approvals are already resolved.',
     };
   }
 
   return {
-    decision: 'Ask for Feedback',
-    explanation:
-      'The task is close but needs a clearer signal before shipping.',
+    decision: 'Ship',
+    explanation: 'Construction is complete and the minimum shippable version is satisfied. Human taste remains the final gate.',
   };
 }
 
 export function stationForDecision(task: Task): Task['station'] {
   const decision = task.releaseDecision as string;
-  if (decision === 'Ship') return 'Trade Ledger';
+  if (decision === 'Ship') return 'Departure Gate';
+  if (decision === 'Revise Once') return 'Revision Alley';
   if (decision === 'Ask for Feedback') return 'Feedback Booth';
-  if (decision === 'Storage' || decision === 'Park') return 'Storage';
+  if (decision === 'Park') return 'Storage';
   return task.station;
 }

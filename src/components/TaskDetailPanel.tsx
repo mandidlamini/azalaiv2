@@ -12,9 +12,10 @@ type Props = {
   onApplyDecision: (task: Task) => void;
   onShip: (task: Task) => void;
   onMoveNext: (taskId: string) => void;
+  onMoveTo: (taskId: string, station: Task['station']) => void;
 };
 
-export function TaskDetailPanel({ task, onClose, onSave, onApplyDecision, onShip, onMoveNext }: Props) {
+export function TaskDetailPanel({ task, onClose, onSave, onApplyDecision, onShip, onMoveNext, onMoveTo }: Props) {
   if (!task) return null;
 
   return (
@@ -33,9 +34,13 @@ export function TaskDetailPanel({ task, onClose, onSave, onApplyDecision, onShip
         </header>
 
         <div className="grid gap-5 py-5 xl:grid-cols-[1fr_360px]">
-          <div className="panel-box">
-            <TaskForm task={task} onChange={onSave} />
-          </div>
+          {['Construction', 'Judgement Hall', 'Revision Alley', 'Feedback Booth', 'Departure Gate', 'Trade Ledger'].includes(task.station) ? (
+            <RouteManifest task={task} />
+          ) : (
+            <div className="panel-box">
+              <TaskForm task={task} onChange={onSave} />
+            </div>
+          )}
           <div className="space-y-5">
             <ScopeMarketPanel task={task} onChange={onSave} />
             <DecisionEngine task={task} onApplyDecision={onApplyDecision} onSave={onSave} />
@@ -43,8 +48,8 @@ export function TaskDetailPanel({ task, onClose, onSave, onApplyDecision, onShip
             {(task.originalStock || task.azalaiClarification) && (
               <section className="panel-box">
                 {task.originalStock && (
-                  <div>
-                    <h3 className="font-display text-lg text-ink">Original Stock</h3>
+                  <details>
+                    <summary className="cursor-pointer font-display text-lg text-ink">Original Stock</summary>
                     <p className="mt-2 text-xs font-bold uppercase tracking-[0.16em] text-stamp">
                       {task.originalStock.inputType} stock
                     </p>
@@ -66,12 +71,12 @@ export function TaskDetailPanel({ task, onClose, onSave, onApplyDecision, onShip
                     {task.originalStock.uploadedFileName && (
                       <p className="mt-2 text-xs text-ink/55">{task.originalStock.uploadedFileName}</p>
                     )}
-                  </div>
+                  </details>
                 )}
 
                 {task.azalaiClarification && (
-                  <div className="mt-5 border-t border-dashed border-ink/20 pt-4">
-                    <h3 className="font-display text-lg text-ink">AZALAI Stock Read</h3>
+                  <details className="mt-5 border-t border-dashed border-ink/20 pt-4">
+                    <summary className="cursor-pointer font-display text-lg text-ink">AZALAI Stock Read</summary>
                     <div className="mt-3 space-y-3 text-sm text-ink/70">
                       <p>
                         <strong className="text-ink">Description:</strong> {task.azalaiClarification.description}
@@ -101,12 +106,19 @@ export function TaskDetailPanel({ task, onClose, onSave, onApplyDecision, onShip
                         </ul>
                       </div>
                     </div>
-                  </div>
+                  </details>
                 )}
               </section>
             )}
             <section className="panel-box">
               <h3 className="font-display text-lg text-ink">Manual Dispatch</h3>
+              {task.station === 'Departure Gate' && (
+                <div className="timing-readout mb-4">
+                  <span>Departure date</span>
+                  <strong>{task.shipGoal || task.shipDate || 'No ship date set'}</strong>
+                  <p>Confirm the work has actually been posted, sent, submitted, uploaded, exported, published, or delivered.</p>
+                </div>
+              )}
               <div className="mt-4 grid gap-2">
                 <button className="primary-button" onClick={() => onMoveNext(task.id)}>
                   <ChevronRight className="h-4 w-4" />
@@ -114,11 +126,20 @@ export function TaskDetailPanel({ task, onClose, onSave, onApplyDecision, onShip
                 </button>
                 <button className="secondary-button" onClick={() => onApplyDecision({ ...task, releaseDecision: task.releaseDecision })}>
                   <CheckCircle2 className="h-4 w-4" />
-                  Route by current decision
+                  Apply current recommendation
+                </button>
+                <button className="secondary-button" onClick={() => onMoveTo(task.id, 'Revision Alley')}>
+                  Move to Revision Alley
+                </button>
+                <button className="secondary-button" onClick={() => onMoveTo(task.id, 'Feedback Booth')}>
+                  Move to Feedback Booth
+                </button>
+                <button className="secondary-button" onClick={() => onMoveTo(task.id, 'Departure Gate')}>
+                  Move to Departure Gate
                 </button>
                 <button className="secondary-button" onClick={() => onShip(task)}>
                   <PackageCheck className="h-4 w-4" />
-                  Mark shipped to ledger
+                  Ship and log in Trade Ledger
                 </button>
               </div>
             </section>
@@ -126,5 +147,33 @@ export function TaskDetailPanel({ task, onClose, onSave, onApplyDecision, onShip
         </div>
       </div>
     </aside>
+  );
+}
+
+function RouteManifest({ task }: { task: Task }) {
+  return (
+    <section className="panel-box">
+      <p className="text-xs font-bold uppercase tracking-[0.18em] text-olive">Locked route manifest</p>
+      <h3 className="mt-2 font-display text-2xl text-ink">{task.title}</h3>
+      <dl className="mt-4 grid gap-3 text-sm md:grid-cols-2">
+        <ManifestItem label="Description" value={task.description} />
+        <ManifestItem label="Task type" value={task.taskType} />
+        <ManifestItem label="Output type" value={task.outputFormat} />
+        <ManifestItem label="Destination" value={task.audience} />
+        <ManifestItem label="Review route" value={task.reviewRoute} />
+        <ManifestItem label="Estimated time taken" value={task.estimatedTime || 'Not estimated'} />
+        <ManifestItem label="Ship goal date" value={task.shipGoal || task.shipDate || 'Not set'} />
+        <ManifestItem label="Risk" value={task.riskLevel} />
+      </dl>
+    </section>
+  );
+}
+
+function ManifestItem({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-xl border border-ink/10 bg-paper px-3 py-2">
+      <dt className="text-xs font-bold uppercase tracking-[0.14em] text-ink/50">{label}</dt>
+      <dd className="mt-1 text-ink/75">{value}</dd>
+    </div>
   );
 }

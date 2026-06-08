@@ -1,7 +1,8 @@
 import { CheckCircle2, X } from 'lucide-react';
 import {
-  AUDIENCES,
+  DESTINATIONS,
   OUTPUT_FORMATS,
+  REVIEW_ROUTES,
   RISK_LEVELS,
   TASK_TYPES,
   type ClarificationDraft,
@@ -43,7 +44,9 @@ export function ClarificationDraftModal({ rawItem, draft, onChange, onAccept, on
               <TextField label="Title" value={draft.title} onChange={(value) => update('title', value)} />
               <Select label="Task type" value={draft.taskType} options={TASK_TYPES} onChange={(value) => update('taskType', value)} />
               <Select label="Output format" value={draft.outputFormat} options={OUTPUT_FORMATS} onChange={(value) => update('outputFormat', value)} />
-              <Select label="Audience" value={draft.audience} options={AUDIENCES} onChange={(value) => update('audience', value)} />
+              <Select label="Destination" value={draft.audience} options={DESTINATIONS} onChange={(value) => update('audience', value)} />
+              <Select label="Review route" value={draft.reviewRoute} options={REVIEW_ROUTES} onChange={(value) => update('reviewRoute', value)} />
+              <TextField label="Reviewer name" value={draft.reviewerName} onChange={(value) => update('reviewerName', value)} />
               <RiskSelector value={draft.riskLevel} onChange={(value) => update('riskLevel', value)} />
               <BlockerReadout blocker={draft.currentBlocker} />
               <TextField label="Due date" value={draft.dueDate} onChange={(value) => update('dueDate', value)} />
@@ -58,6 +61,26 @@ export function ClarificationDraftModal({ rawItem, draft, onChange, onAccept, on
               <div className="mt-4 space-y-4 text-sm text-ink/70">
                 <ReadOnlyBlock label="Description" value={draft.description} />
                 <ReadOnlyBlock label="Minimum shippable version" value={draft.minimumShippableVersion} />
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-ink/50">Minimum shippable checklist</p>
+                  <ul className="mt-2 space-y-2">
+                    {draft.minimumShippableItems.map((item) => (
+                      <li key={item.id} className="ai-readout">{item.text}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-ink/50">AI detected blockers</p>
+                  <ul className="mt-2 space-y-2">
+                    {draft.aiDetectedBlockers.length === 0 ? (
+                      <li className="ai-readout">Route clear</li>
+                    ) : (
+                      draft.aiDetectedBlockers.map((blocker) => (
+                        <li key={blocker.id} className="ai-readout is-blocked">{blocker.label}</li>
+                      ))
+                    )}
+                  </ul>
+                </div>
                 <ReadOnlyBlock label="Due date in intake" value={draft.dueDate || 'Not specified'} />
                 <ReadOnlyBlock label="Due time in intake" value={draft.dueTime || 'Not specified'} />
                 <ReadOnlyBlock label="Timing flag" value={draft.dueDateFlag} />
@@ -86,7 +109,7 @@ export function ClarificationDraftModal({ rawItem, draft, onChange, onAccept, on
             <section className="panel-box grid gap-2">
               <button className="primary-button" onClick={onAccept}>
                 <CheckCircle2 className="h-4 w-4" />
-                Accept Clarification
+                Send to Clarification Station
               </button>
               <button className="secondary-button" onClick={onReject}>
                 Reject / Keep in Inbox

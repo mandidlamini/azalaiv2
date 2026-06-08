@@ -36,7 +36,9 @@ export function TaskCard({ task, onOpen, onMove, onDelete, onDragStart }: Props)
         <div className="mt-4 flex flex-wrap gap-2">
           <span className="tag tag-blue">{task.taskType}</span>
           <span className="tag tag-paper">{task.riskLevel} risk</span>
-          <span className="tag tag-stamp">{task.station === 'Trade Ledger' ? 'Shipped' : task.releaseDecision}</span>
+          <span className="tag tag-stamp">
+            {task.station === 'Trade Ledger' ? 'Shipped' : ['Judgement Hall', 'Revision Alley', 'Feedback Booth', 'Departure Gate'].includes(task.station) ? task.releaseDecision : task.audience}
+          </span>
         </div>
 
         {task.station === 'Trade Ledger' && (

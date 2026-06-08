@@ -4,6 +4,7 @@ export const STATIONS = [
   'Scope Market',
   'Construction',
   'Judgement Hall',
+  'Revision Alley',
   'Feedback Booth',
   'Departure Gate',
   'Trade Ledger',
@@ -39,18 +40,29 @@ export const OUTPUT_FORMATS = [
   'Other',
 ] as const;
 
-export const AUDIENCES = [
+export const DESTINATIONS = [
   'Personal',
   'Social media',
   'Newsletter',
   'Website visitors',
+  'Website / resource hub',
   'Client',
   'Enterprise buyer',
   'Recruiter or hiring manager',
   'Internal team',
   'Specific person',
   'Community',
+  'Public audience',
   'Other',
+] as const;
+
+export const REVIEW_ROUTES = [
+  'No review needed',
+  'Self-review only',
+  'Specific person',
+  'Team review',
+  'Client approval',
+  'Founder approval',
 ] as const;
 
 export const RISK_LEVELS = ['Low', 'Medium', 'High'] as const;
@@ -58,14 +70,21 @@ export const RISK_LEVELS = ['Low', 'Medium', 'High'] as const;
 export const RELEASE_DECISIONS = [
   'Undecided',
   'Ship',
+  'Revise Once',
   'Ask for Feedback',
-  'Storage',
+  'Park',
 ] as const;
 
 export const BLOCKERS = [
   'None',
   'Missing context',
   'Unclear goal',
+  'Task type unclear',
+  'Destination unclear',
+  'No ship date detected',
+  'Output type unclear',
+  'Reviewer unclear',
+  'Scope too broad',
   'Too many ideas',
   'Visual uncertainty',
   'Low confidence',
@@ -78,10 +97,33 @@ export const BLOCKERS = [
 
 export type TaskType = (typeof TASK_TYPES)[number];
 export type OutputFormat = (typeof OUTPUT_FORMATS)[number];
-export type Audience = (typeof AUDIENCES)[number];
+export type Destination = (typeof DESTINATIONS)[number];
+export type Audience = Destination;
+export type ReviewRoute = (typeof REVIEW_ROUTES)[number];
 export type RiskLevel = (typeof RISK_LEVELS)[number];
 export type ReleaseDecision = (typeof RELEASE_DECISIONS)[number];
 export type CurrentBlocker = (typeof BLOCKERS)[number];
+export type AiFieldKey =
+  | 'title'
+  | 'description'
+  | 'taskType'
+  | 'outputFormat'
+  | 'audience'
+  | 'riskLevel'
+  | 'minimumShippableVersion'
+  | 'shipDate'
+  | 'shipGoal'
+  | 'estimatedTime'
+  | 'reviewRoute'
+  | 'reviewerName';
+
+export type AiDetectedBlocker = {
+  id: string;
+  label: CurrentBlocker;
+  field: AiFieldKey | 'scopeItems' | 'minimumShippableItems';
+  resolved: boolean;
+  source: 'AI' | 'Manual';
+};
 
 export const INBOX_INPUT_TYPES = ['Text', 'Voice', 'File', 'Image', 'Link'] as const;
 
@@ -107,9 +149,14 @@ export type ClarificationDraft = {
   taskType: TaskType;
   outputFormat: OutputFormat;
   audience: Audience;
+  reviewRoute: ReviewRoute;
+  reviewerName: string;
   riskLevel: RiskLevel;
   minimumShippableVersion: string;
+  minimumShippableItems: ScopeItem[];
   currentBlocker: CurrentBlocker;
+  aiDetectedBlockers: AiDetectedBlocker[];
+  aiTouchedFields: AiFieldKey[];
   dueDate: string;
   dueTime: string;
   dueDateFlag: string;
@@ -141,11 +188,16 @@ export type Task = {
   taskType: TaskType;
   outputFormat: OutputFormat;
   audience: Audience;
+  reviewRoute: ReviewRoute;
+  reviewerName: string;
   riskLevel: RiskLevel;
   minimumShippableVersion: string;
+  minimumShippableItems: ScopeItem[];
   confidenceScore: number;
   releaseDecision: ReleaseDecision;
   currentBlocker: CurrentBlocker;
+  aiDetectedBlockers: AiDetectedBlocker[];
+  aiTouchedFields: AiFieldKey[];
   shipDate: string;
   dueTime: string;
   dueDateFlag: string;
@@ -158,6 +210,7 @@ export type Task = {
   shippedAt: string;
   evidenceNotes: string;
   scopeItems: ScopeItem[];
+  scopeLocked: boolean;
   originalStock?: RawInboxItem;
   azalaiClarification?: ClarificationDraft;
 };

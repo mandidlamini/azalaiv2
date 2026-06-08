@@ -12,12 +12,24 @@ export const seedTasks: Task[] = [
     taskType: 'Post',
     outputFormat: 'Text post',
     audience: 'Social media',
+    reviewRoute: 'Self-review only',
+    reviewerName: '',
     riskLevel: 'Medium',
     minimumShippableVersion:
       'A 180-250 word post with one concrete example and a clear release principle.',
+    minimumShippableItems: [
+      {
+        id: 'seed-ai-release-gate-msv-1',
+        text: 'The post has one concrete example and a clear release principle.',
+        done: true,
+        source: 'AI',
+      },
+    ],
     confidenceScore: 4,
     releaseDecision: 'Undecided',
     currentBlocker: 'None',
+    aiDetectedBlockers: [],
+    aiTouchedFields: [],
     shipDate: '',
     dueTime: '',
     dueDateFlag: 'Due date not specified in intake.',
@@ -29,7 +41,11 @@ export const seedTasks: Task[] = [
     updatedAt: now,
     shippedAt: '',
     evidenceNotes: 'Should prove the release-gate concept in public.',
-    scopeItems: [],
+    scopeItems: [
+      { id: 'seed-ai-release-gate-scope-1', text: 'Draft the post.', done: true, source: 'AI' },
+      { id: 'seed-ai-release-gate-scope-2', text: 'Check the release principle.', done: true, source: 'AI' },
+    ],
+    scopeLocked: true,
   },
   {
     id: 'seed-stockroom-card',
@@ -40,12 +56,32 @@ export const seedTasks: Task[] = [
     taskType: 'Visual',
     outputFormat: 'Image',
     audience: 'Personal',
+    reviewRoute: 'Self-review only',
+    reviewerName: '',
     riskLevel: 'Low',
     minimumShippableVersion:
       'One card mock-up that proves the stockroom metaphor can feel editorial and usable.',
+    minimumShippableItems: [
+      {
+        id: 'seed-stockroom-card-msv-1',
+        text: 'One mock-up shows the stockroom metaphor clearly.',
+        done: false,
+        source: 'AI',
+      },
+    ],
     confidenceScore: 3,
     releaseDecision: 'Undecided',
     currentBlocker: 'Visual uncertainty',
+    aiDetectedBlockers: [
+      {
+        id: 'seed-stockroom-card-blocker-1',
+        label: 'Visual uncertainty',
+        field: 'description',
+        resolved: false,
+        source: 'AI',
+      },
+    ],
+    aiTouchedFields: [],
     shipDate: '',
     dueTime: '',
     dueDateFlag: 'Due date not specified in intake.',
@@ -57,7 +93,11 @@ export const seedTasks: Task[] = [
     updatedAt: now,
     shippedAt: '',
     evidenceNotes: '',
-    scopeItems: [],
+    scopeItems: [
+      { id: 'seed-stockroom-card-scope-1', text: 'Choose card hierarchy.', done: false, source: 'AI' },
+      { id: 'seed-stockroom-card-scope-2', text: 'Make one visual mock-up.', done: false, source: 'AI' },
+    ],
+    scopeLocked: true,
   },
   {
     id: 'seed-timbuk2-post',
@@ -68,12 +108,32 @@ export const seedTasks: Task[] = [
     taskType: 'Strategy',
     outputFormat: 'Text post',
     audience: 'Enterprise buyer',
+    reviewRoute: 'Self-review only',
+    reviewerName: '',
     riskLevel: 'High',
     minimumShippableVersion:
       'A tight enterprise-facing angle with a clear buyer pain, proof signal, and next question.',
+    minimumShippableItems: [
+      {
+        id: 'seed-timbuk2-post-msv-1',
+        text: 'The angle includes buyer pain, proof signal, and next question.',
+        done: false,
+        source: 'AI',
+      },
+    ],
     confidenceScore: 3,
     releaseDecision: 'Undecided',
     currentBlocker: 'Unclear goal',
+    aiDetectedBlockers: [
+      {
+        id: 'seed-timbuk2-post-blocker-1',
+        label: 'Unclear goal',
+        field: 'description',
+        resolved: false,
+        source: 'AI',
+      },
+    ],
+    aiTouchedFields: [],
     shipDate: '',
     dueTime: '',
     dueDateFlag: 'Due date not specified in intake.',
@@ -86,5 +146,6 @@ export const seedTasks: Task[] = [
     shippedAt: '',
     evidenceNotes: '',
     scopeItems: [],
+    scopeLocked: false,
   },
 ];

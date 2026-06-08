@@ -7,6 +7,7 @@ import { TaskDetailPanel } from './components/TaskDetailPanel';
 import { clarifyInboxItem } from './lib/aiClient';
 import { stationForDecision } from './lib/decisionEngine';
 import { loadRawInboxItems, loadTasks, saveRawInboxItems, saveTasks } from './lib/storage';
+import { canMoveToStation, prepareForStation } from './lib/workflow';
 import { STATIONS, type ClarificationDraft, type RawInboxItem, type Task } from './types';
 
 export default function App() {
@@ -67,11 +68,16 @@ export default function App() {
       taskType: draft.taskType,
       outputFormat: draft.outputFormat,
       audience: draft.audience,
+      reviewRoute: draft.reviewRoute,
+      reviewerName: draft.reviewerName,
       riskLevel: draft.riskLevel,
       minimumShippableVersion: draft.minimumShippableVersion,
+      minimumShippableItems: draft.minimumShippableItems,
       confidenceScore: 3,
       releaseDecision: 'Undecided',
       currentBlocker: draft.currentBlocker,
+      aiDetectedBlockers: draft.aiDetectedBlockers,
+      aiTouchedFields: draft.aiTouchedFields,
       shipDate: draft.dueDate,
       dueTime: draft.dueTime,
       dueDateFlag: draft.dueDateFlag,
@@ -84,6 +90,7 @@ export default function App() {
       shippedAt: '',
       evidenceNotes: '',
       scopeItems: [],
+      scopeLocked: false,
       originalStock: { ...rawItem, processed: true },
       azalaiClarification: draft,
     };
@@ -101,26 +108,45 @@ export default function App() {
         const currentIndex = STATIONS.indexOf(task.station);
         const nextIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
         const station = STATIONS[Math.min(Math.max(nextIndex, 0), STATIONS.length - 1)];
-        return { ...task, station, updatedAt: new Date().toISOString() };
+        const blocked = direction === 'next' ? canMoveToStation(task, station) : null;
+        if (blocked) {
+          window.alert(blocked);
+          return task;
+        }
+        return { ...prepareForStation(task, station), updatedAt: new Date().toISOString() };
       }),
     );
   }
 
   function moveTaskToStation(taskId: string, station: Task['station']) {
     setTasks((current) =>
-      current.map((task) => (task.id === taskId ? { ...task, station, updatedAt: new Date().toISOString() } : task)),
+      current.map((task) => {
+        if (task.id !== taskId) return task;
+        const blocked = canMoveToStation(task, station);
+        if (blocked) {
+          window.alert(blocked);
+          return task;
+        }
+        return { ...prepareForStation(task, station), updatedAt: new Date().toISOString() };
+      }),
     );
   }
 
   function applyDecision(task: Task) {
     if (task.releaseDecision === 'Ship') {
-      shipTask(task);
+      moveTaskToStation(task.id, 'Departure Gate');
+      return;
+    }
+
+    const station = stationForDecision(task);
+    const blocked = canMoveToStation(task, station);
+    if (blocked) {
+      window.alert(blocked);
       return;
     }
 
     const nextTask = {
-      ...task,
-      station: stationForDecision(task),
+      ...prepareForStation(task, station),
       updatedAt: new Date().toISOString(),
     };
 
@@ -151,11 +177,10 @@ export default function App() {
 
   return (
     <main className="min-h-screen bg-paper font-sans text-ink">
-      <div className="route-line" />
       <header className="app-header">
-        <div>
+        <div className="mx-auto max-w-4xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.24em] text-olive">Private release desk</p>
-          <h1 className="mt-3">
+          <h1 className="mt-3 flex justify-center">
             <span className="sr-only">Azalai</span>
             <img
               className="azalai-logo"
@@ -171,10 +196,10 @@ export default function App() {
               AZALAI
             </span>
           </h1>
-          <p className="mt-2 text-xl text-ink/75">Creative stockroom for work that needs to leave storage.</p>
-          <p className="mt-1 text-sm text-ink/60">Clarify the task. Lock the scope. Build the minimum version. Ship the proof.</p>
+          <p className="mx-auto mt-3 max-w-2xl text-xl text-ink/75">A route system for moving creative chaos into shipped work.</p>
+          <p className="mx-auto mt-2 max-w-2xl text-sm text-ink/60">Raw stock enters. AZALAI reads it. Scope locks. Work ships. Results go to the ledger.</p>
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="mx-auto flex flex-wrap justify-center gap-3 md:mx-0">
           <button className="secondary-button" onClick={resetSeedData}>
             <RotateCcw className="h-4 w-4" />
             Reset stock
@@ -213,6 +238,7 @@ export default function App() {
         onApplyDecision={applyDecision}
         onShip={shipTask}
         onMoveNext={(taskId) => moveTask(taskId, 'next')}
+        onMoveTo={moveTaskToStation}
       />
 
       {isIntakeOpen && (

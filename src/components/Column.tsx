@@ -8,6 +8,7 @@ const stationNotes: Record<Station, string> = {
   'Scope Market': 'Lock inclusions and exclusions.',
   Construction: 'Build the minimum version.',
   'Judgement Hall': 'Run the release decision.',
+  'Revision Alley': 'One controlled revision pass.',
   'Feedback Booth': 'Gather targeted signal.',
   'Departure Gate': 'Final dispatch check.',
   'Trade Ledger': 'Shipped proof and evidence.',
@@ -45,10 +46,10 @@ export function Column({ station, tasks, rawItems = [], onOpen, onMove, onDelete
       <div className="sticky top-0 z-10 bg-shelf/95 pb-3">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h2 className="font-display text-xl text-ink">{station}</h2>
+            <h2 className="font-display text-2xl text-ink">{station}</h2>
             <p className="text-sm text-ink/65">{stationNotes[station]}</p>
           </div>
-          <span className="rounded border border-ink/20 bg-card px-2 py-1 text-xs font-semibold text-ink">
+          <span className="font-display text-2xl text-dispatch">
             {count}
           </span>
         </div>
