@@ -178,7 +178,7 @@ function RouteManifest({ task }: { task: Task }) {
 
 function ManifestItem({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-ink/10 bg-paper px-3 py-2">
+    <div className="rounded-lg border border-ink/10 bg-paper px-3 py-2">
       <dt className="text-xs font-bold uppercase tracking-[0.14em] text-ink/50">{label}</dt>
       <dd className="mt-1 text-ink/75">{value}</dd>
     </div>

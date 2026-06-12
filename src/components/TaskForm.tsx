@@ -88,7 +88,7 @@ function AiBlockers({ task, onResolve }: { task: Task; onResolve: (blockerId: st
       <span>AI detected blockers</span>
       <div className="mt-3 space-y-2">
         {blockers.map((blocker) => (
-          <div key={blocker.id} className="flex items-center justify-between gap-3 rounded-xl border border-stamp/25 bg-stamp/10 px-3 py-2">
+          <div key={blocker.id} className="flex items-center justify-between gap-3 rounded-lg border border-stamp/25 bg-stamp/10 px-3 py-2">
             <p className="text-sm font-semibold text-stamp">{blocker.label}</p>
             <button className="text-button" type="button" onClick={() => onResolve(blocker.id)}>
               Mark resolved

@@ -57,16 +57,16 @@
 
   html {
     min-height: 100%;
-    background-color: #f7f7f4;
+    background-color: #f4f0ea;
   }
 
   body {
     margin: 0;
     min-height: 100vh;
     position: relative;
-    color: #3f3332;
+    color: #000000;
     font-family: 'Cerebri Sans Pro', Inter, Arial, system-ui, sans-serif;
-    background: url('/assets/backgrounds/azalai-map-background.png') #f7f7f4;
+    background: url('/assets/backgrounds/azalai-archive-background.png') #f4f0ea;
     background-attachment: fixed;
     background-position: center top;
     background-size: cover;
@@ -79,7 +79,9 @@
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    background: linear-gradient(rgba(247, 247, 244, 0.2), rgba(247, 247, 244, 0.34));
+    background:
+      linear-gradient(rgba(244, 240, 234, 0.48), rgba(244, 240, 234, 0.68)),
+      radial-gradient(circle at 50% 14%, rgba(255, 255, 255, 0.28), transparent 42rem);
   }
 
   #root {
@@ -113,7 +115,7 @@
   }
 
   .app-header {
-    @apply relative z-10 flex flex-col items-center gap-6 px-5 py-10 md:px-8;
+    @apply relative z-10 flex flex-col items-center gap-5 px-5 py-10 md:px-8;
   }
 
   .azalai-logo {
@@ -122,23 +124,23 @@
   }
 
   .azalai-logo-plate {
-    @apply inline-flex rounded-2xl border border-transparent bg-transparent px-0 py-0;
+    @apply inline-flex rounded-lg border border-transparent bg-transparent px-0 py-0;
   }
 
   .route-line {
-    @apply pointer-events-none fixed left-0 right-0 top-28 h-px bg-dispatch/25;
+    @apply pointer-events-none fixed left-0 right-0 top-28 h-px bg-black/15;
   }
 
   .ledger-strip {
-    @apply mx-auto mb-6 grid w-[min(760px,calc(100%-2.5rem))] grid-cols-1 gap-3 rounded-2xl border border-ink/10 bg-shelf/70 p-3 shadow-slip sm:grid-cols-3;
+    @apply mx-auto mb-6 grid w-[min(760px,calc(100%-2.5rem))] grid-cols-1 gap-3 rounded-lg border border-black/10 bg-paper/80 p-3 shadow-slip sm:grid-cols-3;
   }
 
   .ledger-cell {
-    @apply flex flex-col items-center justify-center gap-1 rounded-xl border border-ink/10 bg-transparent px-4 py-3 text-center text-sm text-ink/70;
+    @apply flex flex-col items-center justify-center gap-1 rounded-lg border border-black/10 bg-white/80 px-4 py-3 text-center text-sm text-black/65;
   }
 
   .ledger-cell strong {
-    @apply font-display text-2xl text-dispatch;
+    @apply font-display text-2xl text-black;
     word-spacing: 0.08em;
   }
 
@@ -148,43 +150,43 @@
   }
 
   .intake-desk {
-    @apply rounded-2xl border border-ink/10 bg-card/90 p-4 shadow-panel;
+    @apply rounded-lg border border-black/10 bg-white/90 p-4 shadow-panel;
   }
 
   .intake-modal {
-    @apply absolute left-1/2 top-8 z-10 max-h-[calc(100vh-4rem)] w-[min(940px,calc(100vw-2rem))] -translate-x-1/2 overflow-y-auto rounded-2xl border border-ink/15 bg-card shadow-panel;
+    @apply absolute left-1/2 top-8 z-10 max-h-[calc(100vh-4rem)] w-[min(940px,calc(100vw-2rem))] -translate-x-1/2 overflow-y-auto rounded-lg border border-black/15 bg-white shadow-panel;
   }
 
   .column {
-    @apply w-[310px] shrink-0 rounded-2xl border border-ink/10 bg-shelf/70 p-3 shadow-panel;
+    @apply w-[310px] shrink-0 rounded-lg border border-black/10 bg-paper/80 p-3 shadow-panel;
   }
 
   .station-heading {
-    @apply sticky top-0 z-10 mb-3 border-b border-ink/10 pb-3;
-    background: linear-gradient(rgba(239, 238, 232, 0.94), rgba(239, 238, 232, 0.74), rgba(239, 238, 232, 0));
+    @apply sticky top-0 z-10 mb-3 border-b border-black/10 pb-3;
+    background: linear-gradient(rgba(244, 240, 234, 0.96), rgba(244, 240, 234, 0.8), rgba(244, 240, 234, 0));
   }
 
   .stock-card {
-    @apply cursor-grab rounded-2xl border border-ink/15 bg-card p-4 shadow-slip transition hover:-translate-y-0.5 hover:border-dispatch/40 hover:shadow-panel active:cursor-grabbing;
+    @apply cursor-grab rounded-lg border border-black/10 bg-white p-4 shadow-slip transition hover:-translate-y-0.5 hover:border-black/30 hover:shadow-panel active:cursor-grabbing;
   }
 
   .raw-card {
-    @apply rounded-2xl border-2 border-dashed border-stamp/35 bg-paper p-4 shadow-slip transition hover:-translate-y-0.5 hover:border-stamp/60 hover:shadow-panel;
+    @apply rounded-lg border-2 border-dashed border-black/25 bg-white/95 p-4 shadow-slip transition hover:-translate-y-0.5 hover:border-black/40 hover:shadow-panel;
     background-image: repeating-linear-gradient(
       -45deg,
-      rgba(177, 116, 87, 0.08),
-      rgba(177, 116, 87, 0.08) 8px,
+      rgba(182, 171, 155, 0.18),
+      rgba(182, 171, 155, 0.18) 8px,
       transparent 8px,
       transparent 16px
     );
   }
 
   .raw-label {
-    @apply inline-flex rounded-md border border-stamp/35 bg-stamp/10 px-2 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-stamp;
+    @apply inline-flex rounded-md border border-black/20 bg-paper px-2 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-black;
   }
 
   .empty-slot {
-    @apply rounded-2xl border border-dashed border-ink/25 bg-card/50 p-6 text-center text-sm uppercase tracking-[0.16em] text-ink/45;
+    @apply rounded-lg border border-dashed border-black/20 bg-white/60 p-6 text-center text-sm uppercase tracking-[0.16em] text-black/45;
   }
 
   .tag {
@@ -192,17 +194,17 @@
   }
 
   .tag-blue {
-    border-color: rgba(41, 59, 81, 0.25);
-    background-color: rgba(41, 59, 81, 0.10);
-    color: #293b51;
+    border-color: rgba(0, 0, 0, 0.16);
+    background-color: rgba(182, 171, 155, 0.22);
+    color: #000000;
   }
 
   .tag-paper {
-    @apply border-ink/15 bg-paper text-ink/70;
+    @apply border-black/15 bg-paper text-black/70;
   }
 
   .tag-stamp {
-    @apply border-stamp/25 bg-stamp/10 text-stamp;
+    @apply border-black/20 bg-shelf/20 text-black;
   }
 
   .primary-button,
@@ -210,39 +212,39 @@
   .action-button,
   .icon-button,
   .text-button {
-    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dispatch;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black;
   }
 
   .primary-button {
-    @apply border-stamp bg-stamp px-4 py-2 text-white shadow-button hover:-translate-y-0.5 hover:bg-dispatch;
+    @apply border-black bg-black px-4 py-2 text-white shadow-button hover:-translate-y-0.5 hover:bg-black/80;
   }
 
   .secondary-button {
-    @apply border-olive/35 bg-card/90 px-4 py-2 text-olive hover:-translate-y-0.5 hover:border-dispatch/60 hover:text-stamp hover:shadow-slip;
+    @apply border-black/15 bg-white/90 px-4 py-2 text-black/70 hover:-translate-y-0.5 hover:border-black/35 hover:text-black hover:shadow-slip;
   }
 
   .action-button {
-    @apply border-ink/15 bg-card px-3 py-2 text-left text-sm text-ink hover:-translate-y-0.5 hover:border-dispatch/40 hover:shadow-slip;
+    @apply border-black/15 bg-white px-3 py-2 text-left text-sm text-black hover:-translate-y-0.5 hover:border-black/35 hover:shadow-slip;
   }
 
   .action-button.is-active {
-    @apply border-dispatch bg-dispatch/10 text-dispatch;
+    @apply border-black bg-black/10 text-black;
   }
 
   .icon-button {
-    @apply h-9 w-9 border-ink/15 bg-paper text-ink hover:-translate-y-0.5 hover:border-dispatch/40 hover:text-dispatch hover:shadow-slip;
+    @apply h-9 w-9 border-black/15 bg-paper text-black hover:-translate-y-0.5 hover:border-black/35 hover:text-black hover:shadow-slip;
   }
 
   .text-button {
-    @apply border-transparent px-2 py-1 text-xs text-ink/55 hover:text-stamp;
+    @apply border-transparent px-2 py-1 text-xs text-black/55 hover:text-black;
   }
 
   .stt-toggle {
-    @apply inline-flex w-full items-center justify-center gap-2 rounded-xl border border-dispatch bg-dispatch px-4 py-3 text-sm font-bold uppercase tracking-wide text-card shadow-button transition hover:-translate-y-0.5 hover:bg-terracotta sm:w-auto;
+    @apply inline-flex w-full items-center justify-center gap-2 rounded-lg border border-black bg-black px-4 py-3 text-sm font-bold uppercase tracking-wide text-white shadow-button transition hover:-translate-y-0.5 hover:bg-black/80 sm:w-auto;
   }
 
   .stt-toggle.is-recording {
-    @apply border-stamp bg-stamp text-card hover:bg-stamp/90;
+    @apply border-black bg-shelf text-black hover:bg-shelf/90;
   }
 
   .detail-shell {
@@ -250,15 +252,15 @@
   }
 
   .detail-backdrop {
-    @apply absolute inset-0 bg-ink/40;
+    @apply absolute inset-0 bg-black/45;
   }
 
   .detail-panel {
-    @apply absolute right-0 top-0 h-full w-full overflow-y-auto bg-card p-5 shadow-panel md:w-[86vw] lg:w-[78vw];
+    @apply absolute right-0 top-0 h-full w-full overflow-y-auto bg-white p-5 shadow-panel md:w-[86vw] lg:w-[78vw];
   }
 
   .dispatch-slip-header {
-    @apply flex items-start justify-between gap-4 border-b border-ink/15 pb-3;
+    @apply flex items-start justify-between gap-4 border-b border-black/15 pb-3;
   }
 
   .station-badge,
@@ -267,15 +269,15 @@
   }
 
   .station-badge {
-    @apply border-olive/30 bg-olive/10 text-olive;
+    @apply border-black/15 bg-paper text-black/65;
   }
 
   .date-badge {
-    @apply border-dispatch/30 bg-dispatch/10 text-dispatch;
+    @apply border-black/15 bg-paper text-black;
   }
 
   .date-badge.is-missing {
-    @apply border-stamp/30 bg-stamp/10 text-stamp;
+    @apply border-shelf/60 bg-shelf/20 text-black/65;
   }
 
   .route-actions {
@@ -287,11 +289,11 @@
   }
 
   .panel-box {
-    @apply rounded-2xl border border-ink/15 bg-card p-4 shadow-slip;
+    @apply rounded-lg border border-black/15 bg-white p-4 shadow-slip;
   }
 
   .field {
-    @apply block text-sm font-semibold text-ink/75;
+    @apply block text-sm font-semibold text-black/75;
   }
 
   .field span {
@@ -299,25 +301,25 @@
   }
 
   .field em {
-    @apply rounded-md border border-dispatch/25 bg-dispatch/10 px-2 py-0.5 text-[10px] not-italic uppercase tracking-[0.12em] text-dispatch;
+    @apply rounded-md border border-black/15 bg-paper px-2 py-0.5 text-[10px] not-italic uppercase tracking-[0.12em] text-black/70;
   }
 
   .field input,
   .field textarea,
   .field select {
-    @apply w-full rounded-xl border border-ink/15 bg-paper px-3 py-2 text-ink outline-none transition focus:border-dispatch focus:ring-2 focus:ring-dispatch/20;
+    @apply w-full rounded-lg border border-black/15 bg-paper px-3 py-2 text-black outline-none transition focus:border-black focus:ring-2 focus:ring-black/15;
   }
 
   .field.is-ai input,
   .field.is-ai textarea,
   .field.is-ai select {
-    @apply border-dispatch/30 bg-dispatch/10;
+    @apply border-shelf/60 bg-shelf/15;
   }
 
   .field.is-blocked input,
   .field.is-blocked textarea,
   .field.is-blocked select {
-    @apply border-stamp/45 bg-stamp/10;
+    @apply border-black/30 bg-paper;
   }
 
   .field textarea {
@@ -325,11 +327,11 @@
   }
 
   .field-disclosure {
-    @apply rounded-2xl border border-ink/10 bg-shelf/35 p-3 shadow-slip;
+    @apply rounded-lg border border-black/10 bg-paper/85 p-3 shadow-slip;
   }
 
   .field-disclosure summary {
-    @apply flex cursor-pointer list-none items-center justify-between gap-3 rounded-xl px-2 py-1 text-sm font-bold text-ink/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-dispatch;
+    @apply flex cursor-pointer list-none items-center justify-between gap-3 rounded-lg px-2 py-1 text-sm font-bold text-black/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black;
   }
 
   .field-disclosure summary::-webkit-details-marker {
@@ -338,7 +340,7 @@
 
   .field-disclosure summary::after {
     content: '+';
-    @apply flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-ink/15 bg-paper font-display text-lg text-stamp;
+    @apply flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-black/15 bg-white font-display text-lg text-black;
   }
 
   .field-disclosure[open] summary::after {
@@ -346,52 +348,52 @@
   }
 
   .field-disclosure summary strong {
-    @apply rounded-full border border-olive/20 bg-paper px-2.5 py-1 text-xs text-olive;
+    @apply rounded-full border border-black/10 bg-white px-2.5 py-1 text-xs text-black/60;
   }
 
   .blocker-status {
-    @apply rounded-xl border border-ink/15 bg-paper px-3 py-2 text-sm text-ink/70 shadow-slip;
+    @apply rounded-lg border border-black/15 bg-paper px-3 py-2 text-sm text-black/70 shadow-slip;
   }
 
   .blocker-status span {
-    @apply block font-semibold text-ink/75;
+    @apply block font-semibold text-black/75;
   }
 
   .blocker-status strong {
-    @apply mt-1 block text-base text-ink;
+    @apply mt-1 block text-base text-black;
   }
 
   .blocker-status.is-blocked {
-    @apply border-stamp/35 bg-stamp/10 text-stamp;
+    @apply border-black/30 bg-shelf/20 text-black;
   }
 
   .blocker-status.is-blocked span,
   .blocker-status.is-blocked strong {
-    @apply text-stamp;
+    @apply text-black;
   }
 
   .risk-pill {
-    @apply rounded-xl border px-3 py-2 text-sm font-bold uppercase tracking-wide shadow-slip transition hover:-translate-y-0.5;
+    @apply rounded-lg border px-3 py-2 text-sm font-bold uppercase tracking-wide shadow-slip transition hover:-translate-y-0.5;
   }
 
   .risk-pill.low {
-    @apply border-emerald-700/25 bg-emerald-50 text-emerald-800;
+    @apply border-black/15 bg-white text-black/70;
   }
 
   .risk-pill.medium {
-    @apply border-brass/35 bg-brass/10 text-brass;
+    @apply border-shelf/70 bg-shelf/20 text-black/75;
   }
 
   .risk-pill.high {
-    @apply border-stamp/35 bg-stamp/10 text-stamp;
+    @apply border-black/30 bg-black/10 text-black;
   }
 
   .risk-pill.is-active {
-    @apply ring-2 ring-ink/20;
+    @apply ring-2 ring-black/20;
   }
 
   .timing-readout {
-    @apply rounded-xl border border-dispatch/20 bg-dispatch/10 px-3 py-2 text-sm text-dispatch shadow-slip;
+    @apply rounded-lg border border-black/15 bg-paper px-3 py-2 text-sm text-black shadow-slip;
   }
 
   .timing-readout span {
@@ -403,64 +405,64 @@
   }
 
   .timing-readout p {
-    @apply mt-1 text-dispatch/80;
+    @apply mt-1 text-black/65;
   }
 
   .timing-readout.is-missing {
-    @apply border-stamp/35 bg-stamp/10 text-stamp;
+    @apply border-shelf/70 bg-shelf/20 text-black/65;
   }
 
   .timing-readout.is-missing p {
-    @apply text-stamp/80;
+    @apply text-black/55;
   }
 
   .scope-item {
-    @apply grid grid-cols-[auto_1fr_auto_auto] items-center gap-2 rounded-xl border border-ink/10 bg-paper p-2 shadow-slip;
+    @apply grid grid-cols-[auto_1fr_auto_auto] items-center gap-2 rounded-lg border border-black/10 bg-white p-2 shadow-slip;
   }
 
   .scope-item input[type='checkbox'] {
-    @apply h-4 w-4 accent-dispatch;
+    @apply h-4 w-4 accent-black;
   }
 
   .scope-item input[type='text'],
   .scope-add-input {
-    @apply w-full rounded-xl border border-ink/15 bg-card px-3 py-2 text-sm text-ink outline-none transition focus:border-dispatch focus:ring-2 focus:ring-dispatch/20;
+    @apply w-full rounded-lg border border-black/15 bg-white px-3 py-2 text-sm text-black outline-none transition focus:border-black focus:ring-2 focus:ring-black/15;
   }
 
   .scope-source {
-    @apply rounded-md border border-ink/15 bg-card px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-ink/55;
+    @apply rounded-md border border-black/15 bg-paper px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-black/55;
   }
 
   .scope-source.ai {
-    @apply border-dispatch/25 bg-dispatch/10 text-dispatch;
+    @apply border-shelf/60 bg-shelf/20 text-black/70;
   }
 
   .ai-blockers,
   .ai-suggestion,
   .msv-box {
-    @apply rounded-2xl border border-dispatch/20 bg-dispatch/10 p-4 shadow-slip;
+    @apply rounded-lg border border-black/10 bg-paper p-4 shadow-slip;
   }
 
   .ai-blockers > span,
   .ai-suggestion > span {
-    @apply block text-xs font-bold uppercase tracking-[0.16em] text-dispatch;
+    @apply block text-xs font-bold uppercase tracking-[0.16em] text-black/60;
   }
 
   .ai-blockers > strong,
   .ai-suggestion > strong {
-    @apply mt-1 block font-display text-xl text-ink;
+    @apply mt-1 block font-display text-xl text-black;
   }
 
   .ai-blockers.is-clear {
-    @apply border-olive/25 bg-olive/10;
+    @apply border-shelf/60 bg-shelf/20;
   }
 
   .ai-readout {
-    @apply rounded-xl border border-dispatch/20 bg-dispatch/10 px-3 py-2 text-sm text-ink/75;
+    @apply rounded-lg border border-black/10 bg-paper px-3 py-2 text-sm text-black/75;
   }
 
   .ai-readout.is-blocked {
-    @apply border-stamp/25 bg-stamp/10 text-stamp;
+    @apply border-black/25 bg-shelf/20 text-black;
   }
 
   button:disabled,
