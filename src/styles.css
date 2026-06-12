@@ -60,7 +60,7 @@
     color: #3f3332;
     font-family: 'Cerebri Sans Pro', Inter, Arial, system-ui, sans-serif;
     background:
-      linear-gradient(rgba(247, 247, 244, 0.74), rgba(247, 247, 244, 0.88)),
+      linear-gradient(rgba(247, 247, 244, 0.42), rgba(247, 247, 244, 0.58)),
       url('/assets/backgrounds/azalai-map-background.png'),
       #f7f7f4;
     background-attachment: fixed;
@@ -81,7 +81,7 @@
       repeating-linear-gradient(96deg, transparent 0 18px, rgba(63, 51, 50, 0.014) 19px 20px, transparent 21px 48px);
     background-size: 360px 360px, 420px 420px, 520px 520px, 260px 260px;
     mix-blend-mode: multiply;
-    opacity: 0.6;
+    opacity: 0.28;
   }
 
   h1,
@@ -148,14 +148,12 @@
   }
 
   .column {
-    @apply w-[310px] shrink-0 rounded-2xl border border-ink/10 bg-shelf/50 p-3 shadow-panel;
-    backdrop-filter: blur(1px);
+    @apply w-[310px] shrink-0 rounded-2xl border border-ink/10 bg-shelf/70 p-3 shadow-panel;
   }
 
   .station-heading {
     @apply sticky top-0 z-10 mb-3 border-b border-ink/10 pb-3;
-    background: linear-gradient(rgba(239, 238, 232, 0.92), rgba(239, 238, 232, 0.68), rgba(239, 238, 232, 0));
-    backdrop-filter: blur(3px);
+    background: linear-gradient(rgba(239, 238, 232, 0.94), rgba(239, 238, 232, 0.74), rgba(239, 238, 232, 0));
   }
 
   .stock-card {
