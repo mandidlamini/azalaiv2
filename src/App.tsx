@@ -176,7 +176,7 @@ export default function App() {
   }
 
   return (
-    <main className="min-h-screen bg-paper font-sans text-ink">
+    <main className="app-shell">
       <header className="app-header">
         <div className="mx-auto max-w-4xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.24em] text-olive">Private release desk</p>
